@@ -18,6 +18,24 @@ class Deck
     end
   end
   
+  def triple_cut cut_one, cut_two
+    first_cut = @cards.index(cut_one)
+    second_cut = @cards.index(cut_two)
+    
+    if first_cut > second_cut
+      placeholder = 0
+      placeholder = first_cut
+      first_cut = second_cut
+      second_cut = placeholder
+    end
+    
+    end_of_deck = @cards.slice!((second_cut+1)..53)
+    start_of_deck = @cards.slice!(0...first_cut)
+    
+    @cards = end_of_deck + @cards + start_of_deck    
+    
+  end
+  
   def self.make_deck()
     @deck = []
     (1..52).each{|i| @deck << i} 
@@ -49,7 +67,7 @@ class Deck
     @deck
   end
   
-  def self.triple_cut()
+  def self.triple_cut_old()
     a_index = @deck.index("A")
     b_index = @deck.index("B")
     
