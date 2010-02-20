@@ -1,5 +1,23 @@
-
 class Deck
+  attr_reader :cards
+  
+  def initialize
+    @cards = []
+    (1..52).each{|i| @cards << i} 
+    @cards<<'A'
+    @cards<<'B'
+  end
+  
+  def move card, places
+    card_starts_at = @cards.index(card)
+    @cards.delete_at(card_starts_at)
+    if card_starts_at + places < 54
+      @cards.insert(card_starts_at+places, card)
+    else
+      @cards.insert((card_starts_at+places-54), card)
+    end
+  end
+  
   def self.make_deck()
     @deck = []
     (1..52).each{|i| @deck << i} 
