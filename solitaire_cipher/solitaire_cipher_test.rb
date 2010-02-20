@@ -5,11 +5,12 @@ require 'deck'
 class SolitaireCipherTest < Test::Unit::TestCase
 
   def test_step_one_of_encryption_package
-    assert_equal 'CODEINRUBYLIVELONGER', SolitaireCipher.package("Code in Ruby, live longer!")
+    assert_equal ['C','O','D','E','I','N','R','U','B','Y','L','I','V','E','L','O','N','G','E','R'], SolitaireCipher.package_into_array_of_letters("Code in Ruby, live longer!")
   end
   
-  def test_step_three_of_encryption_make_numbers
-    assert_equal [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18], SolitaireCipher.convert_to_numbers('CODEINRUBYLIVELONGER')
+  def test_convert_array_of_letters_to_numbers
+    assert_equal [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18], 
+                      SolitaireCipher.convert_array_of_letters_to_numbers(['C','O','D','E','I','N','R','U','B','Y','L','I','V','E','L','O','N','G','E','R'])
   end
   
   def test_convert_to_letters
@@ -94,7 +95,7 @@ class SolitaireCipherTest < Test::Unit::TestCase
     @deck = Deck.move_joker_B_down_two
     @deck = Deck.triple_cut
     @deck = Deck.count_cut
-    assert_equal 'DWJXHYRFDGTMSHPUURXJ', Deck.generate_keystream(25)
+    assert_equal 'DWJXHYRFDGTMSHPUURXJ', Deck.generate_keystream(20)
   end
     
 

@@ -87,5 +87,6 @@ class Deck
       count_cut
       keystream <<output_letter
     end
+    puts keystream
   end
 end

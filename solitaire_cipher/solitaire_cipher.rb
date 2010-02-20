@@ -15,19 +15,14 @@ class SolitaireCipher
 #    encrypt(input_message)    
   end
 
-  def self.package(message)
-    stripped_message = message.gsub(/\W/, '').upcase
+  def self.package_into_array_of_letters(message)
+    stripped_message = message.gsub(/\W/, '').upcase.split(//)
   end
   
-  def self.convert_to_numbers(message)
-    message_in_array = message.split(//)
-    
-    message_in_ascii = []
-    message_in_array.each { |character| message_in_ascii <<  character[0]  }
-    
-    message_in_numbers = []
-    message_in_ascii.each { |number| message_in_numbers <<  number-64  }
-    message_in_numbers
+  def self.convert_array_of_letters_to_numbers(array_of_letters)
+    array_in_numbers = []
+    array_of_letters.each { |character| array_in_numbers <<  (character[0]-64)  }
+    array_in_numbers
   end
   
   def self.convert_to_letters(numbered_code)
@@ -37,10 +32,11 @@ class SolitaireCipher
   end
   
   def self.encrypt(message)
-    packaged_message = package(message)
-    numbered_message = convert_to_numbers(packaged_message)
-    puts numbered_message.length
-    numbered_keystream = convert_to_numbers(Deck.generate_keystream(numbered_message.length))
+    packaged_message = package_into_array_of_letters(message)
+    numbered_message = convert_array_of_letters_to_numbers(packaged_message)
+    keystream = Deck.generate_keystream(numbered_message.length) # this line contains the problem
+    puts keystream
+    numbered_keystream = convert_array_of_letters_to_numbers(keystream)
     numbered_code = []
     numbered_message.each_index do |index|
       number = numbered_message[index] + numbered_keystream[index]
