@@ -60,6 +60,21 @@ class DeckTest < Test::Unit::TestCase
     
   end  
   
+  def test_output_card
+    deck = Deck.new
+    
+    assert_equal 2, deck.output_card
+  end
+  
+  def test_output_card_if_top_card_is_a_JOKER
+    deck = Deck.new
+    deck.move 'B', 1
+    deck.move 'A', 1
+    deck.move 1 , 1
+    
+    assert_equal 52, deck.output_card
+  end
+  
   def test_final_deck
     deck = Deck.new
     
