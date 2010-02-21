@@ -1,5 +1,6 @@
 class Deck
   attr_reader :cards
+  JOKERS = ['A', 'B']
   
   def initialize
     @cards = []
@@ -14,7 +15,7 @@ class Deck
     if card_starts_at + places < 54
       @cards.insert(card_starts_at+places, card)
     else
-      @cards.insert((card_starts_at+places-54), card)
+      @cards.insert((card_starts_at+places-53), card)
     end
   end
   
@@ -23,7 +24,6 @@ class Deck
     second_cut = @cards.index(cut_two)
     
     if first_cut > second_cut
-      placeholder = 0
       placeholder = first_cut
       first_cut = second_cut
       second_cut = placeholder
@@ -36,6 +36,17 @@ class Deck
     
   end
   
+  def count_cut
+    if JOKERS.include? @cards.last
+      count = 53
+    else
+      count = @cards[53]
+    end    
+    cut = @cards.slice!(0..(count-1))
+    @cards.insert(-2, cut)
+    @cards = @cards.flatten
+  end
+ ##################################################################################### 
   def self.make_deck()
     @deck = []
     (1..52).each{|i| @deck << i} 
