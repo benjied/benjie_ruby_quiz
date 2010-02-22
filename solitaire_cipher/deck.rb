@@ -61,20 +61,6 @@ class Deck
   
  ##################################################################################### 
 
-  def self.output_letter()
-    number_to_count = @deck[0]
-    if number_to_count == ('A' or 'B')
-      number_to_count = 53
-    end
-    output_number = @deck[number_to_count]
-    if output_number == ('A' or 'B')
-      output_letter = nil
-    else
-      output_number -= 26 if output_number > 26
-      output_letter = (output_number + 64).chr
-    end
-  end
-
   def self.generate_keystream(length)
     make_deck
     keystream = []
