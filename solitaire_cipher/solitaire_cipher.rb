@@ -59,7 +59,7 @@ class SolitaireCipher
     length.times do
       keystream <<generate_a_non_nil_key_letter(deck)
     end
-    keystream
+    keystream.join
   end
   
   
