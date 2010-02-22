@@ -1,3 +1,5 @@
+# Don't have a test for input_and_output... I am a bad person.
+
 require 'test/unit'
 require 'solitaire_cipher'
 require 'deck'
