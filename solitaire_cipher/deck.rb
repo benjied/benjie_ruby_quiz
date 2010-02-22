@@ -58,19 +58,4 @@ class Deck
     
   end
   
-  
- ##################################################################################### 
-
-  def self.generate_keystream(length)
-    make_deck
-    keystream = []
-    length.times do
-      move_joker_A_down_one
-      move_joker_B_down_two
-      triple_cut
-      count_cut
-      keystream <<output_letter
-    end
-    puts keystream
-  end
 end

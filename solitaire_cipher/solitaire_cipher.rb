@@ -20,7 +20,7 @@ class SolitaireCipher
     stripped_message = message.gsub(/\W/, '').upcase.split(//)
   end
   
-  def self.convert_array_of_letters_to_numbers(array_of_letters)
+  def self.convert_array_of_letters_to_numbers array_of_letters 
     array_in_numbers = []
     array_of_letters.each { |character| array_in_numbers <<  (character[0]-64)  }
     array_in_numbers
@@ -46,7 +46,7 @@ class SolitaireCipher
     while key_letter == nil
       deck.move('A', 1)
       deck.move('B', 2)
-      deck.triple_cut ('A', 'B')
+      deck.triple_cut('A', 'B')
       deck.count_cut
       key_letter = make_card_a_letter(deck.output_card)
     end
@@ -65,16 +65,16 @@ class SolitaireCipher
   
   ##########################33
   
-  def self.encrypt(message)
+  def self.encrypt message
     packaged_message = package_into_array_of_letters(message)
     numbered_message = convert_array_of_letters_to_numbers(packaged_message)
-    keystream = Deck.generate_keystream(numbered_message.length) # this line contains the problem
-    puts keystream
-    numbered_keystream = convert_array_of_letters_to_numbers(keystream)
+    keystream = generate_keystream(numbered_message.length)
+    keystream_as_array = package_into_array_of_letters(keystream)
+    numbered_keystream = convert_array_of_letters_to_numbers(keystream_as_array)
     numbered_code = []
     numbered_message.each_index do |index|
       number = numbered_message[index] + numbered_keystream[index]
-      number = number - 26 if numberr > 26
+      number = number - 26 if number > 26
       numbered_code << number
     end
     coded_message = convert_to_letters(numbered_code)
@@ -83,13 +83,14 @@ class SolitaireCipher
     array_of_strings = []
     number_of_groups.times do |offset|
       array_of_strings << coded_message[5*offset..5*offset+4]
+      array_of_strings << ' '
     end
-    coded_message = array_of_strings.join(' ')
+    array_of_strings.pop
+    coded_message = array_of_strings.join('')
     
-    puts coded_message
+    coded_message
     
   end
 
-  
 end
 

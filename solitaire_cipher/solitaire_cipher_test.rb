@@ -59,7 +59,7 @@ class SolitaireCipherTest < Test::Unit::TestCase
 
     expected_deck.move('A', 1)
     expected_deck.move('B', 2)
-    expected_deck.triple_cut ('A', 'B')
+    expected_deck.triple_cut('A', 'B')
     expected_deck.count_cut
 
     card_value = expected_deck.output_card
@@ -70,9 +70,9 @@ class SolitaireCipherTest < Test::Unit::TestCase
     
 
 
-#  def test_solitaire_cipher_encryption
-#    assert_equal 'GLNCQ MJAFF FVOMB JIYCB', SolitaireCipher.encrypt("Code in Ruby, live longer!")
-#  end
+  def test_solitaire_cipher_encryption
+    assert_equal 'GLNCQ MJAFF FVOMB JIYCB', SolitaireCipher.encrypt("Code in Ruby, live longer!")
+  end
   
 end
 
