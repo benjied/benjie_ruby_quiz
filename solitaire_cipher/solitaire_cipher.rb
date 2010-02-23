@@ -3,8 +3,6 @@ require 'deck'
 class SolitaireCipher
   input_message = ARGV[0]
   JOKERS = ['A', 'B']
-  
-
 
   def self.package_into_array_of_letters message
     stripped_message = message.gsub(/\W/, '').upcase.split(//)
