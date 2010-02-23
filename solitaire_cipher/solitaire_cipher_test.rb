@@ -44,8 +44,6 @@ class SolitaireCipherTest < Test::Unit::TestCase
     assert_equal nil, SolitaireCipher.make_card_a_letter(card_value)
   end
   
-  
-  ######
   def test_generate_keystream
     assert_equal 'DWJXHYRFDGTMSHPUURXJ', SolitaireCipher.generate_keystream(20)
   end
@@ -70,11 +68,37 @@ class SolitaireCipherTest < Test::Unit::TestCase
     assert_equal 'Z', SolitaireCipher.generate_a_non_nil_key_letter(test_deck)
   end
     
-
-
   def test_solitaire_cipher_encryption
     assert_equal 'GLNCQ MJAFF FVOMB JIYCB', SolitaireCipher.encrypt("Code in Ruby, live longer!")
   end
+  
+  def test_solitaire_cipher_decryption
+    assert_equal "CODEI NRUBY LIVEL ONGER", SolitaireCipher.decrypt('GLNCQ MJAFF FVOMB JIYCB')
+  end
+  
+  def test_decide_to_encrypt_or_decrypt_should_encrypt
+    input_message = "Code in Ruby, live longer!"
+    expected_output = "\n" + 'Encrypted message = ' + 'GLNCQ MJAFF FVOMB JIYCB' + "\n\n"
+    
+    assert_equal expected_output, SolitaireCipher.decide_to_encrypt_or_decrypt(input_message)
+    
+  end
+  
+  def test_decide_to_encrypt_or_decrypt_should_decrypt
+    input_message = "GLNCQ MJAFF FVOMB JIYCB"
+    expected_output = "\n" + 'Decrypted message = ' + 'CODEI NRUBY LIVEL ONGER' + "\n\n"
+    
+    assert_equal expected_output, SolitaireCipher.decide_to_encrypt_or_decrypt(input_message)
+    
+  end
+  
+  def test_decide_to_encrypt_or_decrypt_will_encrypt_CODEINRUBYLIVELONGER
+    input_message = "CODEINRUBYLIVELONGER"
+    expected_output = "\n" + 'Encrypted message = ' + 'GLNCQ MJAFF FVOMB JIYCB' + "\n\n"
+    
+    assert_equal expected_output, SolitaireCipher.decide_to_encrypt_or_decrypt(input_message)
+    
+  end  
   
 end
 
