@@ -65,6 +65,10 @@ class SolitaireCipherTest < Test::Unit::TestCase
 
     assert_equal 'Z', SolitaireCipher.generate_a_non_nil_key_letter(test_deck)
   end
+############### Everything below here needs to be re-written ##############
+# Decide_to_encrypt_or_decrypt should be called "generate_output_for"
+# Most of encrypt and decrypt should be combined into one 'convert' , which calls "encrpyt or decrypt" which calls encrypt or decrpyt which are small
+# There is also the problem about rounding down the length of the message to an even 5... need to pad with X's
     
   def test_solitaire_cipher_encryption
     assert_equal 'GLNCQ MJAFF FVOMB JIYCB', SolitaireCipher.encrypt("Code in Ruby, live longer!")
