@@ -1,3 +1,6 @@
+
+# There is the problem about rounding down the length of the message to an even 5... need to pad with X's
+
 require 'test/unit'
 require 'solitaire_cipher'
 require 'deck'
@@ -65,42 +68,57 @@ class SolitaireCipherTest < Test::Unit::TestCase
 
     assert_equal 'Z', SolitaireCipher.generate_a_non_nil_key_letter(test_deck)
   end
-############### Everything below here needs to be re-written ##############
-# Decide_to_encrypt_or_decrypt should be called "generate_output_for"
-# Most of encrypt and decrypt should be combined into one 'convert' , which calls "encrpyt or decrypt" which calls encrypt or decrpyt which are small
-# There is also the problem about rounding down the length of the message to an even 5... need to pad with X's
-    
-  def test_solitaire_cipher_encryption
-    assert_equal 'GLNCQ MJAFF FVOMB JIYCB', SolitaireCipher.encrypt("Code in Ruby, live longer!")
-  end
   
-  def test_solitaire_cipher_decryption
-    assert_equal "CODEI NRUBY LIVEL ONGER", SolitaireCipher.decrypt('GLNCQ MJAFF FVOMB JIYCB')
-  end
-  
-  def test_decide_to_encrypt_or_decrypt_should_encrypt
+  def test_generate_output_for_encryption
     input_message = "Code in Ruby, live longer!"
     expected_output = "\n" + 'Encrypted message = ' + 'GLNCQ MJAFF FVOMB JIYCB' + "\n\n"
     
-    assert_equal expected_output, SolitaireCipher.decide_to_encrypt_or_decrypt(input_message)
-    
+    assert_equal expected_output, SolitaireCipher.generate_output_for(input_message)
   end
   
-  def test_decide_to_encrypt_or_decrypt_should_decrypt
+  def test_generate_output_for_decryption
     input_message = "GLNCQ MJAFF FVOMB JIYCB"
     expected_output = "\n" + 'Decrypted message = ' + 'CODEI NRUBY LIVEL ONGER' + "\n\n"
     
-    assert_equal expected_output, SolitaireCipher.decide_to_encrypt_or_decrypt(input_message)
-    
+    assert_equal expected_output, SolitaireCipher.generate_output_for(input_message)
   end
   
-  def test_decide_to_encrypt_or_decrypt_will_encrypt_CODEINRUBYLIVELONGER
+  def test_generate_output_for_correctly_encrypts_CODEINRUBYLIVELONGER
     input_message = "CODEINRUBYLIVELONGER"
     expected_output = "\n" + 'Encrypted message = ' + 'GLNCQ MJAFF FVOMB JIYCB' + "\n\n"
     
-    assert_equal expected_output, SolitaireCipher.decide_to_encrypt_or_decrypt(input_message)
-    
+    assert_equal expected_output, SolitaireCipher.generate_output_for(input_message)
   end  
   
+  def test_convert_encrypts_message
+    packaged_message = 'Code in Ruby, live longer!'
+    coded_message = 'GLNCQ MJAFF FVOMB JIYCB'
+    
+    assert_equal coded_message, SolitaireCipher.convert('encrypt', packaged_message)
+  end
+  
+  def test_convert_decrypts_message
+    coded_message = 'GLNCQ MJAFF FVOMB JIYCB'
+    plaintext_message = 'CODEI NRUBY LIVEL ONGER'
+    
+    assert_equal plaintext_message, SolitaireCipher.convert('decrypt', coded_message)    
+  end
+  
+  def test_encrypt
+    numbered_message = [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18]
+    numbered_keystream = [4,23,10,24,8,25,18,6,4,7,20,13,19,8,16,21,21,18,24,10]
+    numbered_code = [7,12,14,3,17,13,10,1,6,6,6,22,15,13,2,10,9,25,3,2]
+    
+    assert_equal numbered_code, SolitaireCipher.encrypt(numbered_message, numbered_keystream)
+  end
+
+  def test_decrypt
+    numbered_code = [7,12,14,3,17,13,10,1,6,6,6,22,15,13,2,10,9,25,3,2]
+    numbered_keystream = [4,23,10,24,8,25,18,6,4,7,20,13,19,8,16,21,21,18,24,10]
+    numbered_message = [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18]
+    
+    assert_equal numbered_message, SolitaireCipher.decrypt(numbered_code, numbered_keystream)
+  end
+
 end
 

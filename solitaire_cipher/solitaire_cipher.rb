@@ -49,67 +49,60 @@ class SolitaireCipher
     end
     keystream.join
   end
-  
-  def self.encrypt message
-    packaged_message = package_into_array_of_letters message
+
+  def self.convert encrypt_or_decrypt, packaged_message
+    packaged_message = package_into_array_of_letters packaged_message
     numbered_message = convert_array_of_letters_to_numbers packaged_message
     keystream = generate_keystream numbered_message.length
     keystream_as_array = package_into_array_of_letters keystream
     numbered_keystream = convert_array_of_letters_to_numbers keystream_as_array
+    
+    if encrypt_or_decrypt == 'encrypt'
+      converted_number_array = encrypt numbered_message,numbered_keystream
+    else
+      converted_number_array = decrypt numbered_message,numbered_keystream
+    end
+    
+    converted_message = convert_to_letters converted_number_array
+    number_of_groups = numbered_message.length/5
+    array_of_strings = []
+    number_of_groups.times do |offset|
+      array_of_strings << converted_message[5*offset..5*offset+4]
+      array_of_strings << ' '
+    end
+    array_of_strings.pop
+    message = array_of_strings.join('')
+    
+    message
+  end
+  
+  def self.encrypt numbered_message, keystream
     numbered_code = []
     numbered_message.each_index do |index|
-      number = numbered_message[index] + numbered_keystream[index]
+      number = numbered_message[index] + keystream[index]
       number = number - 26 if number > 26
       numbered_code << number
     end
-    coded_message = convert_to_letters numbered_code
-    
-    number_of_groups = packaged_message.length/5
-    array_of_strings = []
-    number_of_groups.times do |offset|
-      array_of_strings << coded_message[5*offset..5*offset+4]
-      array_of_strings << ' '
-    end
-    array_of_strings.pop
-    coded_message = array_of_strings.join('')
-    
-    coded_message
-    
+    numbered_code
   end
   
-  def self.decrypt message
-    packaged_message = package_into_array_of_letters message
-    numbered_message = convert_array_of_letters_to_numbers packaged_message
-    keystream = generate_keystream numbered_message.length
-    keystream_as_array = package_into_array_of_letters keystream
-    numbered_keystream = convert_array_of_letters_to_numbers keystream_as_array
-    numbered_code = []
-    numbered_message.each_index do |index|
-      numbered_message[index] += 26 if numbered_message[index] - numbered_keystream[index] < 1
-      number = numbered_message[index] - numbered_keystream[index]
-      numbered_code << number
+  def self.decrypt numbered_code, keystream
+    numbered_message = []
+    numbered_code.each_index do |index|
+      numbered_code[index] += 26 if numbered_code[index] - keystream[index] < 1
+      number = numbered_code[index] - keystream[index]
+      numbered_message << number
     end
-    coded_message = convert_to_letters numbered_code
-    
-    number_of_groups = packaged_message.length/5
-    array_of_strings = []
-    number_of_groups.times do |offset|
-      array_of_strings << coded_message[5*offset..5*offset+4]
-      array_of_strings << ' '
-    end
-    array_of_strings.pop
-    coded_message = array_of_strings.join('')
-    
-    coded_message
+    numbered_message
   end
   
-  def self.decide_to_encrypt_or_decrypt input_message
+  def self.generate_output_for input_message
     puts "\n" + 'Input message = ' + input_message + "\n"
   
     if  input_message =~ /^[A-Z][A-Z][A-Z][A-Z][A-Z]( [A-Z][A-Z][A-Z][A-Z][A-Z])*$/
-      output = "\n" + 'Decrypted message = ' + decrypt(input_message) + "\n\n"
+      output = "\n" + 'Decrypted message = ' + convert('decrypt', input_message) + "\n\n"
     else
-      output = "\n" + 'Encrypted message = ' + encrypt(input_message) + "\n\n"
+      output = "\n" + 'Encrypted message = ' + convert('encrypt',input_message) + "\n\n"
     end
     
     puts output
@@ -117,7 +110,7 @@ class SolitaireCipher
   end
   
   if __FILE__ == $0
-    SolitaireCipher.decide_to_encrypt_or_decrypt input_message
+    SolitaireCipher.generate_output_for input_message
   end
 
 end
