@@ -3,22 +3,8 @@
 
 require 'test/unit'
 require 'solitaire_cipher'
-require 'deck'
 
 class SolitaireCipherTest < Test::Unit::TestCase
-
-  def test_package_into_array_of_letters
-    assert_equal ['C','O','D','E','I','N','R','U','B','Y','L','I','V','E','L','O','N','G','E','R'], SolitaireCipher.package_into_array_of_letters("Code in Ruby, live longer!")
-  end
-  
-  def test_convert_array_of_letters_to_numbers
-    assert_equal [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18], 
-                      SolitaireCipher.convert_array_of_letters_to_numbers(['C','O','D','E','I','N','R','U','B','Y','L','I','V','E','L','O','N','G','E','R'])
-  end
-  
-  def test_convert_to_letters
-    assert_equal ['C','O','D','E','I','N','R','U','B','Y','L','I','V','E','L','O','N','G','E','R'], SolitaireCipher.convert_to_letters([3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18])
-  end
 
   def test_make_card_a_letter_from_deck_output_card
     deck = Deck.new
@@ -45,10 +31,6 @@ class SolitaireCipherTest < Test::Unit::TestCase
     assert_equal nil, SolitaireCipher.make_card_a_letter(card_value)
   end
   
-  def test_generate_keystream
-    assert_equal 'DWJXHYRFDGTMSHPUURXJ', SolitaireCipher.generate_keystream(20)
-  end
-  
   def test_generate_a_non_nil_key_letter
     expected_deck = Deck.new
     expected_deck.move(52, 3)
@@ -69,56 +51,35 @@ class SolitaireCipherTest < Test::Unit::TestCase
     assert_equal 'Z', SolitaireCipher.generate_a_non_nil_key_letter(test_deck)
   end
   
-  def test_generate_output_for_encryption
-    input_message = "Code in Ruby, live longer!"
-    expected_output = "\n" + 'Encrypted message = ' + 'GLNCQ MJAFF FVOMB JIYCB' + "\n\n"
+  def test_encrypt_message
+    message = 'Code in Ruby, live longer!'
+    encrypted_message = 'GLNCQ MJAFF FVOMB JIYCB'
     
-    assert_equal expected_output, SolitaireCipher.generate_output_for(input_message)
+    assert_equal encrypted_message, SolitaireCipher.encrypt(message)
   end
   
-  def test_generate_output_for_decryption
-    input_message = "GLNCQ MJAFF FVOMB JIYCB"
-    expected_output = "\n" + 'Decrypted message = ' + 'CODEI NRUBY LIVEL ONGER' + "\n\n"
-    
-    assert_equal expected_output, SolitaireCipher.generate_output_for(input_message)
-  end
-  
-  def test_generate_output_for_correctly_encrypts_CODEINRUBYLIVELONGER
-    input_message = "CODEINRUBYLIVELONGER"
-    expected_output = "\n" + 'Encrypted message = ' + 'GLNCQ MJAFF FVOMB JIYCB' + "\n\n"
-    
-    assert_equal expected_output, SolitaireCipher.generate_output_for(input_message)
-  end  
-  
-  def test_convert_encrypts_message
-    packaged_message = 'Code in Ruby, live longer!'
-    coded_message = 'GLNCQ MJAFF FVOMB JIYCB'
-    
-    assert_equal coded_message, SolitaireCipher.convert('encrypt', packaged_message)
-  end
-  
-  def test_convert_decrypts_message
+  def test_decrypt_message
     coded_message = 'GLNCQ MJAFF FVOMB JIYCB'
     plaintext_message = 'CODEI NRUBY LIVEL ONGER'
     
-    assert_equal plaintext_message, SolitaireCipher.convert('decrypt', coded_message)    
+    assert_equal plaintext_message, SolitaireCipher.decrypt(coded_message)    
   end
   
-  def test_encrypt
-    numbered_message = [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18]
-    numbered_keystream = [4,23,10,24,8,25,18,6,4,7,20,13,19,8,16,21,21,18,24,10]
-    numbered_code = [7,12,14,3,17,13,10,1,6,6,6,22,15,13,2,10,9,25,3,2]
-    
-    assert_equal numbered_code, SolitaireCipher.encrypt(numbered_message, numbered_keystream)
-  end
-
-  def test_decrypt
-    numbered_code = [7,12,14,3,17,13,10,1,6,6,6,22,15,13,2,10,9,25,3,2]
-    numbered_keystream = [4,23,10,24,8,25,18,6,4,7,20,13,19,8,16,21,21,18,24,10]
-    numbered_message = [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18]
-    
-    assert_equal numbered_message, SolitaireCipher.decrypt(numbered_code, numbered_keystream)
-  end
+  # def test_encrypt
+  #   numbered_message = [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18]
+  #   numbered_keystream = [4,23,10,24,8,25,18,6,4,7,20,13,19,8,16,21,21,18,24,10]
+  #   numbered_code = [7,12,14,3,17,13,10,1,6,6,6,22,15,13,2,10,9,25,3,2]
+  #   
+  #   assert_equal numbered_code, SolitaireCipher.encrypt(numbered_message, numbered_keystream)
+  # end
+  # 
+  # def test_decrypt
+  #   numbered_code = [7,12,14,3,17,13,10,1,6,6,6,22,15,13,2,10,9,25,3,2]
+  #   numbered_keystream = [4,23,10,24,8,25,18,6,4,7,20,13,19,8,16,21,21,18,24,10]
+  #   numbered_message = [3,15,4,5,9,14,18,21,2,25,12,9,22,5,12,15,14,7,5,18]
+  #   
+  #   assert_equal numbered_message, SolitaireCipher.decrypt(numbered_code, numbered_keystream)
+  # end
 
 end
 
