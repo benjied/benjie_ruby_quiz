@@ -3,7 +3,7 @@ require 'deck'
 class SolitaireCipher
 
   def self.make_card_a_letter card_value
-    if Deck::JOKERS.include? card_value
+    if Deck::JOKERS.include?(card_value)
       letter = nil
     else
       card_value -= 26 if card_value > 26
@@ -18,7 +18,7 @@ class SolitaireCipher
       deck.move('B', 2)
       deck.triple_cut('A', 'B')
       deck.count_cut
-      key_letter = make_card_a_letter deck.output_card
+      key_letter = make_card_a_letter(deck.output_card)
     end
     key_letter
   end
@@ -72,6 +72,27 @@ class SolitaireCipher
     (message_as_letters.size/5).times do |offset|
       array_of_strings << message_as_letters[5*offset..5*offset+4].join
     end
-    array_of_strings.join(' ')
+    array_of_strings << message_as_letters[5*(message_as_letters.size/5)..message_as_letters.size].join
+    array_of_strings.join(' ').rstrip
   end
+
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

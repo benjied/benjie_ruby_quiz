@@ -37,7 +37,7 @@ class Deck
   end
   
   def count_cut
-    if JOKERS.include? @cards.last
+    if JOKERS.include?(@cards.last)
       count = 53
     else
       count = @cards.last
@@ -48,7 +48,7 @@ class Deck
   end
   
   def output_card
-    if JOKERS.include? @cards.first
+    if JOKERS.include?(@cards.first)
       count = 53
     else
       count = @cards.first
