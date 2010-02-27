@@ -24,9 +24,7 @@ class Deck
     second_cut = @cards.index(cut_two)
     
     if first_cut > second_cut
-      placeholder = first_cut
-      first_cut = second_cut
-      second_cut = placeholder
+      first_cut, second_cut = second_cut, first_cut
     end
     
     end_of_deck = @cards.slice!((second_cut+1)..53)
